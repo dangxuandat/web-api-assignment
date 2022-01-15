@@ -21,12 +21,17 @@ namespace Cinema.Repository.Implementations
 
         public void Delete(TEntity deletedEntity)
         {
-            throw new NotImplementedException();
+            if(_context.Entry(deletedEntity).State == EntityState.Detached)
+            {
+                _dbSet.Attach(deletedEntity);
+            }
+            _dbSet.Remove(deletedEntity);
         }
 
         public void DeleteById(Guid id)
         {
-            throw new NotImplementedException();
+            TEntity deletedEntity = _dbSet.Find(id);
+            Delete(deletedEntity);
         }
 
         public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includedProperties = "")
@@ -44,27 +49,28 @@ namespace Cinema.Repository.Implementations
             
             if(orderBy != null)
             {
-                return orderBy(query).ToList();
+                return orderBy(query).AsNoTracking().ToList();
             }
             else
             {
-                return query.ToList();
+                return query.AsNoTracking().ToList();
             }
         }
 
         public TEntity GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _dbSet.Find(id);
         }
 
         public void Insert(TEntity newEntity)
         {
-            throw new NotImplementedException();
+            _dbSet.Add(newEntity);
         }
 
         public void Update(TEntity updatedEntity)
         {
-            throw new NotImplementedException();
+            _dbSet.Attach(updatedEntity);
+            _context.Entry(updatedEntity).State = EntityState.Modified;
         }
     }
 }

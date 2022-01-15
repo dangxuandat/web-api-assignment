@@ -8,7 +8,12 @@ namespace Cinema.Repository.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRole Roles { get; }
+        IAccountRepository Accounts { get; }
+        IMovieRepository Movies { get; }
+        IAuditoriumRepository Auditoriums { get; }
+        IReservationRepository Reservations { get; }
+        ISeatReservationRepository SeatReservations { get; }
+        IShowtimesRepository Showtimes { get; }
 
         void Save();
     }

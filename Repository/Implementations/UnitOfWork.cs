@@ -30,7 +30,13 @@ namespace Cinema.Repository.Implementations
             _seatReservationRepository = seatReservationRepository;
             _showtimesRepository = showtimesRepository;
         }
-        public IRole Roles { get; }
+
+        public IAccountRepository Accounts { get => _accountRepository; }
+        public IAuditoriumRepository Auditoriums { get => _auditoriumRepository; }
+        public IMovieRepository Movies { get => _movieRepository; }
+        public IReservationRepository Reservations { get => _reservationRepository; }
+        public ISeatReservationRepository SeatReservations { get => _seatReservationRepository; }
+        public IShowtimesRepository Showtimes { get => _showtimesRepository; }
 
         public void Dispose()
         {

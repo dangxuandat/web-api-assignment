@@ -1,22 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Repository;
 using Microsoft.EntityFrameworkCore;
-using Cinema.Repository.Interfaces;
-using Cinema.Repository.Implementations;
 using web_api_assignment.Extensions;
-
 namespace web_api_assignment
 {
     public class Startup
@@ -33,6 +24,7 @@ namespace web_api_assignment
         {
             services.AddRepository();
             services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
