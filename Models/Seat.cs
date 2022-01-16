@@ -11,7 +11,6 @@ namespace Entity
 	public class Seat
 	{	
 		[Key]
-		[Required(ErrorMessage = "Id is not null")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Id { get; set; }
 

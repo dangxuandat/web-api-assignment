@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cinema.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,6 @@ namespace Entity
 	public class Movie
 	{
 		[Key]
-		[Required(ErrorMessage = "Id is not null")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Id { get; set; }
 
@@ -24,9 +24,11 @@ namespace Entity
 		[Column(TypeName = "ntext")]
 		public string Description { get; set; }
 
-		
-		public long Duration { get; set; } 
+		public long Duration { get; set; }
 
-		public virtual ICollection<Showtimes> Showtimes { get; set; }
+		public virtual IList<MovieCast> MovieCasts { get; set; }
+		public virtual IList<MovieShowtimes> MovieShowtimes { get; set; }
+
+		public virtual IList<MovieCategory> MovieCategories { get; set; }
 	}
 }

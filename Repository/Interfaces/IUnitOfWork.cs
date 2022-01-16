@@ -14,6 +14,8 @@ namespace Cinema.Repository.Interfaces
         IReservationRepository Reservations { get; }
         ISeatReservationRepository SeatReservations { get; }
         IShowtimesRepository Showtimes { get; }
+        ISeatRepository Seats { get; }
+        IRole Roles { get; }
 
         void Save();
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cinema.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,9 +12,8 @@ namespace Entity
 	public class Showtimes
 	{
 		[Key]
-		[Required(ErrorMessage ="Id is not null")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 
 		[Column(TypeName = "datetime")]
 		public DateTime StartTime { get; set; }
@@ -21,9 +21,9 @@ namespace Entity
 		[Column(TypeName = "datetime")]
 		public DateTime EndTime { get; set; }
 
-		public virtual ICollection<Movie> Movies { get; set; }
+		public virtual IList<MovieShowtimes> MovieShowtimes { get; set; }
 		
-		public virtual ICollection<Auditorium> Auditoriums { get; set; }
+		public virtual IList<ShowtimesAuditorium> ShowtimesAuditoriums { get; set; }
 	
 	}
 }

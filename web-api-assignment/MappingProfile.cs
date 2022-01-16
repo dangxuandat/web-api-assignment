@@ -11,7 +11,9 @@ namespace web_api_assignment
         /// </summary>
         public MappingProfile()
         {
-            CreateMap<NewMovieDTO, Movie>().ForMember(movie => movie.Showtimes,option => option.Ignore());
+            CreateMap<NewMovieDTO, Movie>();
+            CreateMap<Movie, MovieToShowDTO>();
+            CreateMap<NewRoleDTO, Role>();
         }
     }
 }

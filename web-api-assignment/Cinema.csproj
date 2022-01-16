@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Repository\Cinema.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\" />
-  </ItemGroup>
-
 </Project>

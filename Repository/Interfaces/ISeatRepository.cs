@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cinema.Repository.Interfaces
 {
-    public interface IMovieRepository : IGenericRepository<Movie>
+    public interface ISeatRepository : IGenericRepository<Seat>
     {
-        Movie GetByTitle(string title);
     }
 }

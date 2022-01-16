@@ -7,7 +7,6 @@ namespace Entity
 	public class Account
 	{
 		[Key]
-		[Required(ErrorMessage = "Account id is required!!")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Id { get; set; }
 	
@@ -25,6 +24,9 @@ namespace Entity
 
 		[StringLength (15)]
 		public string LastName { get; set; }
+
+		[Column(TypeName = "varchar(2084)")]
+		public string AvatarUrl { get; set; }
 
 		public Role Role { get; set; }
 	}

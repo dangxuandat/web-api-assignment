@@ -14,5 +14,11 @@ namespace Cinema.Repository.Implementations
         public MovieRepository(RepositoryContext context) : base(context)
         {
         }
+
+        public Movie GetByTitle(string title)
+        {
+           Movie searchMovie = _dbSet.FirstOrDefault(x => x.Title == title);
+           return searchMovie;
+        }
     }
 }

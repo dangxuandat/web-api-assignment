@@ -11,7 +11,7 @@ namespace Cinema.Repository.Implementations
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         private RepositoryContext _context;
-        internal DbSet<TEntity> _dbSet;
+        protected DbSet<TEntity> _dbSet;
 
         public GenericRepository(RepositoryContext context)
         {

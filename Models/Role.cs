@@ -11,11 +11,10 @@ namespace Entity
 	public class Role
 	{
 		[Key]
-		[Required(ErrorMessage = "Id is required")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 
-		[StringLength(10)]
+		[StringLength(20)]
 		public string Name { get; set; }
 	}
 }

@@ -17,10 +17,12 @@ namespace Cinema.Repository.Implementations
         private readonly IReservationRepository _reservationRepository;
         private readonly ISeatReservationRepository _seatReservationRepository;
         private readonly IShowtimesRepository _showtimesRepository;
+        private readonly IRole _roleRepository;
+        private readonly ISeatRepository _seatRepository;
         private bool _disposed = false;
         public UnitOfWork(RepositoryContext context, IAccountRepository accountRepository,IAuditoriumRepository auditoriumRepository,
             IMovieRepository movieRepository, IReservationRepository reservationRepository, ISeatReservationRepository seatReservationRepository,
-            IShowtimesRepository showtimesRepository)
+            IShowtimesRepository showtimesRepository, IRole roleRepository, ISeatRepository seatRepository)
         {
             _context = context;
             _accountRepository = accountRepository;
@@ -29,6 +31,8 @@ namespace Cinema.Repository.Implementations
             _reservationRepository = reservationRepository;
             _seatReservationRepository = seatReservationRepository;
             _showtimesRepository = showtimesRepository;
+            _roleRepository = roleRepository;
+            _seatRepository = seatRepository;
         }
 
         public IAccountRepository Accounts { get => _accountRepository; }
@@ -37,6 +41,16 @@ namespace Cinema.Repository.Implementations
         public IReservationRepository Reservations { get => _reservationRepository; }
         public ISeatReservationRepository SeatReservations { get => _seatReservationRepository; }
         public IShowtimesRepository Showtimes { get => _showtimesRepository; }
+
+        public IRole Roles
+        {
+            get => _roleRepository;
+        }
+
+        public ISeatRepository Seats
+        {
+            get => _seatRepository;
+        }
 
         public void Dispose()
         {
