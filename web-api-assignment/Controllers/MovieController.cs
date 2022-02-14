@@ -1,37 +1,153 @@
 ﻿using AutoMapper;
+using Cinema.LoggerService;
 using Cinema.Models;
 using Cinema.Models.DataTransferObject;
 using Cinema.Repository.Interfaces;
 using Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace web_api_assignment.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class MovieController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public MovieController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly ILoggerManager _logger;
+        public MovieController(IUnitOfWork unitOfWork, IMapper mapper, ILoggerManager logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet("/movies")]
+        [Authorize(Roles = "Content Creator, Manager, Customer")]
         public IActionResult GetAllMovies()
         {
-            IEnumerable<Movie> listOfMovies = _unitOfWork.Movies.Get(null,null,"Cast,Category");
+            IEnumerable<Movie> listOfMovies = _unitOfWork.Movies.GetAllMoviesWithCastsAndCategories();
+            
             IEnumerable<MovieToShowDTO> movieToShows = _mapper.Map<IEnumerable<MovieToShowDTO>>(listOfMovies);
             return Ok(movieToShows);
         }
 
+        [HttpPost("/movies")]
+        [Authorize(Roles = "Content Creator, Manager")]
+        public IActionResult NewMovie(NewMovieDTO newMovie)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Movie movie = _mapper.Map<Movie>(newMovie);
+                    IList<Category> listCategory = new List<Category>();
+                    foreach (string nameOfCast in newMovie.NameOfCasts)
+                    {
+                        nameOfCast.Trim();
+                        string[] names = nameOfCast.Split(' ');
+                        Cast cast = new Cast()
+                        {
+                            FirstName = names[0],
+                            LastName = names[1]
+                        };
+                        if (movie.MovieCasts == null)
+                        {
+                            movie.MovieCasts = new List<MovieCasts>();
+                        }
+                        movie.MovieCasts.Add(new MovieCasts
+                        {
+                            Movie = movie,
+                            Cast = cast
+                        });
+                    }
+                    foreach (Guid category in newMovie.Categories)
+                    {
+                        Category categoryOfMovie = _unitOfWork.Category.GetById(category);
+                        if (categoryOfMovie != null)
+                        {
+                            if (movie.MovieCategories == null)
+                            {
+                                movie.MovieCategories = new List<MovieCategory>();
+                            }
+                            movie.MovieCategories.Add(
+                                new MovieCategory
+                                {
+                                    Movie = movie,
+                                    Category = categoryOfMovie
+                                }
+                                );
+                            listCategory.Add(categoryOfMovie);
+                        }
+                    }
+                    _unitOfWork.Movies.Insert(movie);
+                    _unitOfWork.Save();
+                    return Ok(new { NameOfFilm = movie.Title, Director = movie.Director, Duration = movie.Duration, Description = newMovie.Description, Cast = newMovie.NameOfCasts, Categories = listCategory.Select(x => x.Name)});
+                }
+                catch (DbUpdateException exception)
+                {
+                    _logger.LogError($"An Exception {exception.GetType().Name} occurred: \n Message: {exception.Message} \n Stack Trace: {exception.StackTrace} ");
+                    return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                }
+            }
+            else
+            {
+                IEnumerable<string> modelErrors = ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage);
+                return BadRequest(modelErrors);
+            }
+        }
 
-
+        [HttpPut("/movies/{id}")]
+        [Authorize(Roles = "Content Creator, Manager")]
+        public IActionResult updateMovie(Guid id, [FromBody]UpdateMovieDTO updateMovie)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Movie updatedMovie = _unitOfWork.Movies.GetById(id);
+                    if (updatedMovie == null)
+                    {
+                        return BadRequest("Movie does not exist");
+                    }
+                    else
+                    {
+                        if (updateMovie.Title != null)
+                        {
+                            updatedMovie.Title = updateMovie.Title;
+                        }
+                        if (updateMovie.Director != null)
+                        {
+                            updatedMovie.Director = updateMovie.Director;
+                        }
+                        if (updateMovie.Description != null)
+                        {
+                            updatedMovie.Description = updateMovie.Description;
+                        }
+                        if (!updateMovie.Duration.Equals(0))
+                        {
+                            updatedMovie.Duration = updateMovie.Duration;
+                        }
+                        _unitOfWork.Movies.Update(updatedMovie);
+                    }
+                }
+                else
+                {
+                    IEnumerable<string> modelErrors = ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage);
+                    return BadRequest(modelErrors);
+                }
+            }catch(DbUpdateException exception)
+            {
+                _logger.LogError($"An Exception {exception.GetType().Name} occurred: \n Message: {exception.Message} \n Stack Trace: {exception.StackTrace} ");
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
         //[HttpPost("/movies")]
         //public IActionResult InsertNewMovie()
         //{

@@ -14,5 +14,10 @@ namespace Cinema.Repository.Implementations
         public AccountRepository(RepositoryContext context) : base(context)
         {
         }
+
+        public void CreateAccount(Account newAccount)
+        {
+            var result =  _dbSet.Add(newAccount);
+        }
     }
 }

@@ -22,6 +22,8 @@ namespace web_api_assignment.Extensions
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped<IRole, RoleRepository>();
             services.AddScoped<ISeatRepository,SeatRepository>();
+            services.AddScoped<ICastRepository, CastRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
     }
 }

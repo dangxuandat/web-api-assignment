@@ -9,6 +9,8 @@ namespace Cinema.Repository.Interfaces
 {
     public interface IRole : IGenericRepository<Role>
     {
+        public Role GetRoleById(Guid roleId);
 
+        public Role GetRoleByName(string name);
     }
 }

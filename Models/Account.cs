@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,10 +10,10 @@ namespace Entity
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Id { get; set; }
-	
-		[StringLength(15)]
-		[Required(ErrorMessage = "Username is required!!")]
-		public string UserName { get; set; }
+
+		[EmailAddress]
+		[Required]
+		public string Email { get; set; }
 		
 		[Column(TypeName ="char")]
 		[StringLength(64)]

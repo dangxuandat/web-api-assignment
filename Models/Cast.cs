@@ -19,6 +19,6 @@ namespace Cinema.Models
         [StringLength(20)]
         public string LastName { get; set; }
 
-        public IList<MovieCast> MovieCasts { get; set; }
+        public IList<MovieCasts> MovieCasts { get; set; }
     }
 }

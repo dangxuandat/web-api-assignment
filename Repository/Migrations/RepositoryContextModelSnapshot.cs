@@ -19,7 +19,7 @@ namespace Cinema.Repository.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Cinema.Models.Cast", b =>
+            modelBuilder.Entity("Cinema.Models.Casts", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace Cinema.Repository.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("Cinema.Models.MovieCast", b =>
+            modelBuilder.Entity("Cinema.Models.MovieCasts", b =>
                 {
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
@@ -137,6 +137,10 @@ namespace Cinema.Repository.Migrations
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("varchar(2084)");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("FirstName")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
@@ -153,12 +157,10 @@ namespace Cinema.Repository.Migrations
                     b.Property<Guid?>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("RoleId");
 
@@ -301,9 +303,9 @@ namespace Cinema.Repository.Migrations
                     b.ToTable("Showtimes");
                 });
 
-            modelBuilder.Entity("Cinema.Models.MovieCast", b =>
+            modelBuilder.Entity("Cinema.Models.MovieCasts", b =>
                 {
-                    b.HasOne("Cinema.Models.Cast", "Cast")
+                    b.HasOne("Cinema.Models.Casts", "Cast")
                         .WithMany("MovieCasts")
                         .HasForeignKey("CastId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -438,7 +440,7 @@ namespace Cinema.Repository.Migrations
                     b.Navigation("Seat");
                 });
 
-            modelBuilder.Entity("Cinema.Models.Cast", b =>
+            modelBuilder.Entity("Cinema.Models.Casts", b =>
                 {
                     b.Navigation("MovieCasts");
                 });

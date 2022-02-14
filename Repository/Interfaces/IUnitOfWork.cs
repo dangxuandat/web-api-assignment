@@ -17,6 +17,10 @@ namespace Cinema.Repository.Interfaces
         ISeatRepository Seats { get; }
         IRole Roles { get; }
 
+        ICastRepository Casts { get; }
+
+        ICategoryRepository Category { get; }
+
         void Save();
     }
 }

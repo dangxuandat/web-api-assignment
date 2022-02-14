@@ -19,10 +19,12 @@ namespace Cinema.Repository.Implementations
         private readonly IShowtimesRepository _showtimesRepository;
         private readonly IRole _roleRepository;
         private readonly ISeatRepository _seatRepository;
+        private readonly ICastRepository _castRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private bool _disposed = false;
         public UnitOfWork(RepositoryContext context, IAccountRepository accountRepository,IAuditoriumRepository auditoriumRepository,
             IMovieRepository movieRepository, IReservationRepository reservationRepository, ISeatReservationRepository seatReservationRepository,
-            IShowtimesRepository showtimesRepository, IRole roleRepository, ISeatRepository seatRepository)
+            IShowtimesRepository showtimesRepository, IRole roleRepository, ISeatRepository seatRepository , ICastRepository castRepository, ICategoryRepository categoryRepository)
         {
             _context = context;
             _accountRepository = accountRepository;
@@ -30,9 +32,11 @@ namespace Cinema.Repository.Implementations
             _movieRepository = movieRepository;
             _reservationRepository = reservationRepository;
             _seatReservationRepository = seatReservationRepository;
+            _categoryRepository = categoryRepository;
             _showtimesRepository = showtimesRepository;
             _roleRepository = roleRepository;
             _seatRepository = seatRepository;
+            _castRepository = castRepository;
         }
 
         public IAccountRepository Accounts { get => _accountRepository; }
@@ -42,6 +46,7 @@ namespace Cinema.Repository.Implementations
         public ISeatReservationRepository SeatReservations { get => _seatReservationRepository; }
         public IShowtimesRepository Showtimes { get => _showtimesRepository; }
 
+        public ICategoryRepository Category { get => _categoryRepository;  }
         public IRole Roles
         {
             get => _roleRepository;
@@ -50,6 +55,11 @@ namespace Cinema.Repository.Implementations
         public ISeatRepository Seats
         {
             get => _seatRepository;
+        }
+
+        public ICastRepository Casts
+        {
+            get => _castRepository;
         }
 
         public void Dispose()

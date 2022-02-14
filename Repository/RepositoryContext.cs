@@ -15,13 +15,13 @@ namespace Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MovieCast>()
+            modelBuilder.Entity<MovieCasts>()
                 .HasKey(key => new { key.MovieId, key.CastId });
-            modelBuilder.Entity<MovieCast>().HasOne<Movie>(movie => movie.Movie)
+            modelBuilder.Entity<MovieCasts>().HasOne<Movie>(movie => movie.Movie)
                                             .WithMany(s => s.MovieCasts)
                                             .HasForeignKey(key => key.MovieId);
 
-            modelBuilder.Entity<MovieCast>().HasOne<Cast>(cast => cast.Cast)
+            modelBuilder.Entity<MovieCasts>().HasOne<Cast>(cast => cast.Cast)
                                             .WithMany(s => s.MovieCasts)
                                             .HasForeignKey(key => key.CastId);
             modelBuilder.Entity<MovieCategory>().HasKey(key => new { key.MovieId, key.CategoryId });
@@ -62,6 +62,11 @@ namespace Repository
             modelBuilder.Entity<ShowtimesAuditorium>().HasOne<Auditorium>(auditoriums => auditoriums.Auditorium)
                                                              .WithMany(s => s.ShowtimesAuditoriums)
                                                              .HasForeignKey(key => key.AuditoriumId);
+
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.HasIndex(e => e.Email).IsUnique();
+            });
         }
 
         public DbSet<Account> Accounts { get; set; }
@@ -73,7 +78,7 @@ namespace Repository
         public DbSet<SeatReservation> seatReservations { get; set; }
         public DbSet<Showtimes> Showtimes { get; set; }
         public DbSet<Cast> Casts { get; set; }
-        public DbSet<MovieCast> MovieCasts { get; set; }
+        public DbSet<MovieCasts> MovieCasts { get; set; }
         public DbSet<MovieCategory> MovieCategories { get; set; }
         public DbSet<MovieShowtimes> MovieShowtimes { get; set; }
         public DbSet<ReservationSeatReservation> ReservationSeatReservations { get; set; }

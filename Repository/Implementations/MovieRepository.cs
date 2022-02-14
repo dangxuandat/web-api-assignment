@@ -1,5 +1,6 @@
 ﻿using Cinema.Repository.Interfaces;
 using Entity;
+using Microsoft.EntityFrameworkCore;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,12 @@ namespace Cinema.Repository.Implementations
     {
         public MovieRepository(RepositoryContext context) : base(context)
         {
+        }
+
+        public IEnumerable<Movie> GetAllMoviesWithCastsAndCategories()
+        {
+            IEnumerable<Movie> listMovies = _dbSet.AsNoTracking().Include(movie => movie.MovieCasts).ThenInclude(movieCasts => movieCasts.Cast).Include(movie => movie.MovieCategories).ThenInclude(movieCategories => movieCategories.Category).ToList();
+            return listMovies;
         }
 
         public Movie GetByTitle(string title)

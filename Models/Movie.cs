@@ -26,7 +26,7 @@ namespace Entity
 
 		public long Duration { get; set; }
 
-		public virtual IList<MovieCast> MovieCasts { get; set; }
+		public virtual IList<MovieCasts> MovieCasts { get; set; }
 		public virtual IList<MovieShowtimes> MovieShowtimes { get; set; }
 
 		public virtual IList<MovieCategory> MovieCategories { get; set; }

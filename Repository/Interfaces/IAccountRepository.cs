@@ -9,5 +9,6 @@ namespace Cinema.Repository.Interfaces
 {
     public interface IAccountRepository : IGenericRepository<Account>
     {
+        public  void CreateAccount(Account newAccount);
     }
 }
